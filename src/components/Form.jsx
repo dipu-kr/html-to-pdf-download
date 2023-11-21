@@ -31,11 +31,37 @@ const Form = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  
   // ----------------------------testing--------------------
   const handleSubmit = async (e) => {
     e.preventDefault();
+	console.log("hello")
+    const req = {
+      block_id: formData.block,
+      application_id: formData.applicationId,
+      gender_id: formData.gender,
+    };
 
+    try {
+      const response = await instance.post("/get-candiate", req);
+      console.log(response.data)
+
+
+      if (response.data) {
+        
+      } else {
+        console.error("Server response does not contain valid PDF content.");
+      }
+    } catch (error) {
+      console.error("Error fetching block options:", error);
+    }
+  };
+
+  // -----------------testing code---------------
+  const downloadPDF = (e) => {
+    e.preventDefault();
+
+    const roll_no = 12345;
+	const dist = "Dispur";
     const staticHTMLContent = `
     <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +85,7 @@ const Form = () => {
   </head>
   <body>
     <!-- -------------------------- -->
-    <table style="width:90%; border:2px solid gray; margin: 50px auto 10px auto;padding-bottom: 10px !important;" id="pdfhtml">
+    <table style="width:100% !important; border:2px solid gray; margin: 50px auto 10px auto;padding-bottom: 10px !important;" id="pdfhtml">
       <tr style="width:100%; display: flex;justify-content: space-around; align-items: center;">
         <td>
           
@@ -74,7 +100,7 @@ const Form = () => {
       </tr>
     </table>
     <!-- ------------------- -->
-    <table style="width:90%; border:2px solid gray;margin: 15px auto 10px auto; padding-top:5px ; padding-bottom: 18px;">
+    <table style="width:100% !important; border:2px solid gray;margin: 15px auto 10px auto; padding-top:5px ; padding-bottom: 18px;">
 		<tr>
 			<td style="text-align: center;">
 				<p style="font-size: 15px;margin-bottom:18px !important">वज्ञापन सं0. 02/2011 के आलोक में कटिहार जिला अन्तर्गत गृह रक्षकों के चयन हेतु षारीरिक दक्षता परीक्षा का प्रवेष पत्र</p>
@@ -83,23 +109,33 @@ const Form = () => {
 	</table>
 
     <!-- ---------------------------- -->
-    <table style="width:90%; border:2px solid gray; margin: 50px auto 10px auto;padding: 7px;">
+    <table style="width:100% !important; border:2px solid gray; margin: 50px auto 10px auto;padding: 7px;">
 		<tr>
 			<td>
 				<table style="width:100% ;">
 					<tr>
-						<td style="width:85%">
-							<table style="width: 100%!important;">
-								<tr>
-									<td style="width:50%;border:1px solid black;padding: 8px 4px !important;">
-										<p>क्रमांक/रोल नं0ः-</p>
-									</td>
-									<td style="width:50%;border:1px solid black;padding: 8px 4px !important;">
-										<p>प्रखंडः-</p>
-									</td>
-								</tr>
-							</table>
+						<td style="width:85%;padding-left:4px !important">
 							<table style="width:100%">
+                <tr>
+									<td>
+                    <table style="width:100% !important;border-collapse: collapse;">
+                      <tr>
+                      <td style="width:50% !important;border:1px solid black;padding: 8px 4px !important;">
+                        <div style="display:flex;">
+						  <p>क्रमांक/रोल नं0ः-</p>
+						  <span>${roll_no}</span>
+						</div>
+                    </td>
+                    <td style="width:50% !important;border:1px solid black;padding: 8px 4px !important;">
+					   <div style="display:flex;">
+                         <p>प्रखंडः-</p>
+					     <span>${dist}</span>
+					   </div> 
+                    </td>
+                      </tr>
+                    </table>
+                  </td>
+								</tr>
 								<tr>
 									<td style="width:100%;border:1px solid black;padding: 8px 4px !important;">
 										<p class="m-0 fs-14">अभ्यर्थी का नाम/पिता का नामः-</p>
@@ -119,11 +155,11 @@ const Form = () => {
 								</tr>
 							</table>
 						</td>
-						<td style="width: 15%;">
+						<td style="width: 15%;padding:8px 4px !important">
 							<table style="width:200px !important;height:180px !important;">
 								<tr>
 									<td style="border: 2px solid gray; text-align: center;">
-										<span class="fs-12">अभ्यर्थी का नवीनतम<br>फोटा</span>
+										<span>अभ्यर्थी का नवीनतम<br>फोटा</span>
 									</td>
 								</tr>
 							</table>
@@ -180,21 +216,21 @@ const Form = () => {
 		</tr>
 	</table>
     <!-- ------------------------ -->
-    <table style="width:90%; border:2px solid gray; margin: 50px auto 150px auto;padding: 0px 7px;">
+    <table style="width:100% !important;height:auto !important; border:2px solid gray; margin: 30px auto 100px auto;">
 		<tr>
-			<td>
-				<table style="border:1px solid black;padding: 15px 12px 20px 50px;">
+			<td style="padding: 7px 4px !important;">
+				<table>
 					<tr>
-						<td class=" text-justify">
+						<td class="width:100% !important;height:auto; text-justify;padding-left:10px !important">
 							<p style="text-align: center;margin-bottom: 15px;">महत्वपूर्ण निर्देशः</p>
-							<ol style="font-size: 15px;">
-								<li style="margin-bottom: 4px;">  पुरूष/ महिला उम्मीदवार को आपके निर्धारित तिथि के अतिरिक्त अन्य तिथि को शारीरिक दक्षता की जॉच परीक्षा में सम्मिलित नहीं हाने दिया जायेगा ।</li>
-								<li style="margin-bottom: 4px;">  अभ्यर्थीगण प्रवेश पत्र पर अपना हाल का खिंचाया हुआ रंगीन पासपोर्ट साइज का फोटो प्रवेश पत्र पर दिये गये जगह पर चिपका कर स्वअभिप्रमाणित कर जॉच स्थल पर लायेंगे।</li>
-								<li style="margin-bottom: 4px;">  <b>अभ्यर्थी को प्रवेश पत्र की दो प्रतियॉ लाना अनिवार्य है।</b></li>
-								<li style="margin-bottom: 4px;">  इस प्रवेश पत्र की मूल प्रति जॉच काउन्टर पर ले ली जायेगी। उम्मीदवार अपने पास इसकी छायाप्रति रखेंगे।</li>
-								<li style="margin-bottom: 4px;">  प्रवेश पत्र के बिना शारीरिक दक्षता परीक्षा में सम्मिलित हाने की अनुमति नहीं मिलेगी। शारीरिक दक्षता परीक्षा में सम्मिलित हाने से पहले प्रवेश पत्र पर नीचे दिये गये निर्दिष्ट स्थान पर अपना हस्ताक्षर कर लें। इस प्रवेश पत्र को दक्षता परीक्षा होने के बाद अपने पास सुरक्षित रख लें क्यूंकि बाद में इसकी आवश्यकता पड सकती है।</li>
-								<li style="margin-bottom: 4px;">  <b>शारीरिक दक्षता परीक्षा केन्द मे बायोमैट्रिक सत्यापन के लिए आधार कार्ड  लाना अनिवार्य है।</b></li>
-								<li>  जॉच परिसर के अन्दर मोबाइल फोन. स्मार्ट वॉच. ब्लूटूथ या अन्य इलेक्ट्रोनिक सामग्री लेकर प्रवेश पूर्णतः वर्जित है।</li>
+							<ol style="font-size: 14px;">
+								<li style="margin-bottom: 6px;">1.  पुरूष/ महिला उम्मीदवार को आपके निर्धारित तिथि के अतिरिक्त अन्य तिथि को शारीरिक दक्षता की जॉच परीक्षा में सम्मिलित नहीं हाने दिया जायेगा ।</li>
+								<li style="margin-bottom: 6px;"> 2. अभ्यर्थीगण प्रवेश पत्र पर अपना हाल का खिंचाया हुआ रंगीन पासपोर्ट साइज का फोटो प्रवेश पत्र पर दिये गये जगह पर चिपका कर स्वअभिप्रमाणित कर जॉच स्थल पर लायेंगे।</li>
+								<li style="margin-bottom: 6px;">3. <b>अभ्यर्थी को प्रवेश पत्र की दो प्रतियॉ लाना अनिवार्य है।</b></li>
+								<li style="margin-bottom: 6px;">4.  इस प्रवेश पत्र की मूल प्रति जॉच काउन्टर पर ले ली जायेगी। उम्मीदवार अपने पास इसकी छायाप्रति रखेंगे।</li>
+								<li style="margin-bottom: 6px;">5.  प्रवेश पत्र के बिना शारीरिक दक्षता परीक्षा में सम्मिलित हाने की अनुमति नहीं मिलेगी। शारीरिक दक्षता परीक्षा में सम्मिलित हाने से पहले प्रवेश पत्र पर नीचे दिये गये निर्दिष्ट स्थान पर अपना हस्ताक्षर कर लें। इस प्रवेश पत्र को दक्षता परीक्षा होने के बाद अपने पास सुरक्षित रख लें क्यूंकि बाद में इसकी आवश्यकता पड सकती है।</li>
+								<li style="margin-bottom: 6px;">6. <b>शारीरिक दक्षता परीक्षा केन्द मे बायोमैट्रिक सत्यापन के लिए आधार कार्ड  लाना अनिवार्य है।</b></li>
+								<li style="margin-bottom: 10px;">7.  जॉच परिसर के अन्दर मोबाइल फोन. स्मार्ट वॉच. ब्लूटूथ या अन्य इलेक्ट्रोनिक सामग्री लेकर प्रवेश पूर्णतः वर्जित है।</li>
 							</ol>
 						</td>
 					</tr>
@@ -205,35 +241,16 @@ const Form = () => {
   </body>
 </html>
     `;
-    const req = {
-      block_id: formData.block,
-      application_id: formData.applicationId,
-      gender_id: formData.gender,
+
+    const pdfOptions = {
+      margin: 10,
+      filename: "admitCard.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     };
 
-    try {
-      const response = await instance.post("/download-admit", req);
-      // console.log(response.data)
-      // const result = { data: staticHTMLContent };
-
-      if (response.data) {
-        // const pdfContent = response.data;
-        const pdfOptions = {
-          margin: 10,
-          filename: "admitCard.pdf",
-          image: { type: "jpeg", quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-        };
-    
-        html2pdf().from(staticHTMLContent).set(pdfOptions).save();  
-      } else {
-        console.error("Server response does not contain valid PDF content.");
-      }
-      
-    } catch (error) {
-      console.error("Error fetching block options:", error);
-    }
+    html2pdf().from(staticHTMLContent).set(pdfOptions).save();
   };
 
   return (
@@ -253,7 +270,6 @@ const Form = () => {
             value={formData.block}
             onChange={handleChange}
             className="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
           >
             <option value="">Select Block</option>
             {blockOptions.length > 0 &&
@@ -276,7 +292,6 @@ const Form = () => {
             onChange={handleChange}
             className="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
             placeholder="Enter Application ID"
-            required
           />
         </div>
         <div className="mb-4">
@@ -289,7 +304,6 @@ const Form = () => {
             onChange={handleChange}
             value={formData.gender}
             className="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
-            required
           >
             <option value="">Select Gender</option>
             <option value="1">Male</option>
