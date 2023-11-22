@@ -3,6 +3,7 @@ import instance from "../api";
 // import html2canvas from "html2canvas";
 // import jsPDF from "jspdf";
 import html2pdf from "html2pdf.js";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Form = () => {
   const [formData, setFormData] = useState({
@@ -32,29 +33,29 @@ const Form = () => {
   };
 
   // ----------------------------testing--------------------
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-	console.log("hello")
-    const req = {
-      block_id: formData.block,
-      application_id: formData.applicationId,
-      gender_id: formData.gender,
-    };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+	// console.log("hello")
+  //   const req = {
+  //     block_id: formData.block,
+  //     application_id: formData.applicationId,
+  //     gender_id: formData.gender,
+  //   };
 
-    try {
-      const response = await instance.post("/get-candiate", req);
-      console.log(response.data)
+  //   try {
+  //     const response = await instance.post("/get-candiate", req);
+  //     console.log(response.data)
 
 
-      if (response.data) {
+  //     if (response.data) {
         
-      } else {
-        console.error("Server response does not contain valid PDF content.");
-      }
-    } catch (error) {
-      console.error("Error fetching block options:", error);
-    }
-  };
+  //     } else {
+  //       console.error("Server response does not contain valid PDF content.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching block options:", error);
+  //   }
+  // };
 
   // -----------------testing code---------------
   const downloadPDF = (e) => {
@@ -258,7 +259,7 @@ const Form = () => {
       <h2 className="text-xl font-bold mb-4 text-center">
         Download your Admit Card
       </h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={downloadPDF}>
         {/* Your form fields */}
         <div className="mb-4">
           <label htmlFor="block" className="block mb-1">
@@ -318,6 +319,7 @@ const Form = () => {
           Submit
         </button>
       </form>
+      <Toaster/>
     </div>
   );
 };
